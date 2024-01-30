@@ -7,10 +7,10 @@ $Scopes = @(
 Connect-MgGraph -Scopes $Scopes -NoWelcome
 
 # List of users w. a column called ID
-$inputCsvPath = "C:\Users\afrancisco_local\OneDrive - JESUIT REFUGEE SERVICE\MFA-ITA-AUDIT_2024-1-30.csv"
+$inputCsvPath = "PATH"
 
 # The output file
-$outputCsvPath = "C:\Users\afrancisco_local\OneDrive - JESUIT REFUGEE SERVICE\MFA-ITA.csv"
+$outputCsvPath = "PATH"
 
 # Calling the user IDs from line2
 $userIdList = Import-Csv -Path $inputCsvPath
@@ -24,7 +24,10 @@ foreach ($userId in $userIdList) {
         Write-Host "Processing user: $($userId.Id)"
         $userInfo = Get-MgUser -UserId $userId.Id -Property DisplayName, Mail, SignInActivity |
             Select-Object DisplayName, Mail, 
-                @{Name='LastSignInDateTime'; Expression={$_.SignInActivity.LastSignInDateTime}}
+                     @{Name='LastSignInDateTime'; Expression={$_.SignInActivity.LastSignInDateTime}},
+                     @{Name='LastSignInRequestId'; Expression={$_.SignInActivity.LastSignInRequestId}},
+                     @{Name='LastNonInteractiveSignInDateTime'; Expression={$_.SignInActivity.LastNonInteractiveSignInDateTime}},
+                     @{Name='LastNonInteractiveSignInRequestId'; Expression={$_.SignInActivity.LastNonInteractiveSignInRequestId}}
 
         $userData += $userInfo
 
