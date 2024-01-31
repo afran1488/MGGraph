@@ -1,4 +1,3 @@
-﻿# This script connects to Graph and gets a csv of groups that have devices as members. The export gets more details and auto saves the report to Downloads.
 $Scopes = @("Directory.Read.All")
 Connect-MgGraph -Scopes $Scopes -NoWelcome
 
@@ -17,9 +16,9 @@ foreach ($group in $groups) {
             GroupName = $groupInfo.DisplayName
             GroupId = $groupInfo.Id
             MemberCount = $memberCount
-            OnPremisesSyncEnabled = $groupInfo.OnPremisesSyncEnabled
             GroupTypes = ($groupInfo.GroupTypes -join ", ")
             MembershipRule = $groupInfo.MembershipRule
+            OnPremisesSyncEnabled = $groupInfo.OnPremisesSyncEnabled
         }
 
         $groupsWithDevicesDetails += $details
